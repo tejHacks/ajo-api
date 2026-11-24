@@ -54,6 +54,13 @@ class AuthTest extends TestCase
         $this->getJson('/api/me')->assertUnauthorized();
     }
 
+    public function test_a_request_without_json_headers_still_gets_a_json_401(): void
+    {
+        $this->get('/api/groups')
+            ->assertUnauthorized()
+            ->assertJsonPath('message', 'Unauthenticated.');
+    }
+
     public function test_logout_revokes_the_token(): void
     {
         $user = User::factory()->create();
